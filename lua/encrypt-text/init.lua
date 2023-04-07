@@ -11,9 +11,8 @@ local function encrypt(key)
     local key_byte = string.byte(key, (i - 1) % #key + 1)
     table.insert(cipher, string.char(bit.bxor(byte, key_byte)))
   end
-  local text_crypted = table.concat(cipher)
   local encrypted_text = "<!-- ENCRYPTED TEXT --\n" ..
-      M.b64enc("Test") .. "\n-- /ENCRYPTED TEXT -->\n"
+      M.b64enc(table.concat(cipher)) .. "\n-- /ENCRYPTED TEXT -->\n"
   vim.api.nvim_buf_set_lines(0, 1, -1, false, vim.split(encrypted_text, "\n", true))
 end
 
@@ -35,7 +34,7 @@ local function decrypt(key)
     return
   end
   local encrypted_text = table.concat(encrypted_lines, "\n", start_line + 1, end_line - 1)
-  local cipher = vim.b64decode(encrypted_text)
+  local cipher = M.b64dec(encrypted_text)
   local plain = {}
   for i = 1, #cipher do
     local byte = string.byte(cipher, i)
@@ -104,5 +103,6 @@ end
 M.encrypt = encrypt
 M.decrypt = decrypt
 M.b64enc = b64enc
+M.b64dec = b64dec
 
 return M
