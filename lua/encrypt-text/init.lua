@@ -12,7 +12,7 @@ local function encrypt(key)
     table.insert(cipher, string.char(bit.bxor(byte, key_byte)))
   end
   local encrypted_text = "<!-- ENCRYPTED TEXT --\n" ..
-      M.b64enc(table.concat(cipher)) .. "\n-- /ENCRYPTED TEXT -->\n"
+      M.b64encode(table.concat(cipher)) .. "\n-- /ENCRYPTED TEXT -->\n"
   vim.api.nvim_buf_set_lines(0, 1, -1, false, vim.split(encrypted_text, "\n", true))
 end
 
@@ -34,17 +34,19 @@ local function decrypt(key)
     return
   end
   local encrypted_text = table.concat(encrypted_lines, "\n", start_line + 1, end_line - 1)
-  local cipher = M.b64dec(encrypted_text)
+  local cipher = M.b64decode(encrypted_text)
   local plain = {}
   for i = 1, #cipher do
     local byte = string.byte(cipher, i)
     local key_byte = string.byte(key, (i - 1) % #key + 1)
     table.insert(plain, string.char(bit.bxor(byte, key_byte)))
   end
-  vim.api.nvim_buf_set_lines(0, start_line, end_line - 1, false, vim.split(table.concat(plain), "\n", true))
+  vim.api.nvim_buf_set_lines(0, start_line, end_line, false, vim.split(table.concat(plain), "\n", true))
 end
+
+-- http://lua-users.org/wiki/BaseSixtyFour
 -- encoding
-local function b64enc(data)
+local function b64encode(data)
   return (
       (data:gsub('.', function(x)
         local r, b = '', x:byte()
@@ -66,7 +68,7 @@ local function b64enc(data)
 end
 
 -- decoding
-local function b64dec(data)
+local function b64decode(data)
   data = string.gsub(data, '[^' .. dic .. '=]', '')
   return (
       data
