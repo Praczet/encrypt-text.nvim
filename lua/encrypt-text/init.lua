@@ -41,7 +41,7 @@ local function decrypt(key)
     local key_byte = string.byte(key, (i - 1) % #key + 1)
     table.insert(plain, string.char(bit.bxor(byte, key_byte)))
   end
-  vim.api.nvim_buf_set_lines(0, start_line, end_line, false, vim.split(table.concat(plain), "\n", true))
+  vim.api.nvim_buf_set_lines(0, start_line, end_line + 1, false, vim.split(table.concat(plain), "\n", true))
 end
 
 -- http://lua-users.org/wiki/BaseSixtyFour
