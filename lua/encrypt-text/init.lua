@@ -4,6 +4,7 @@ local function encrypt(key)
   local text = table.concat(vim.api.nvim_buf_get_lines(0, 1, -1, false), "\n")
   local cipher = {}
   -- print(text)
+  print(cipher)
   for i = 1, #text do
     local byte = string.byte(text, i)
     local key_byte = string.byte(key, (i - 1) % #key + 1)
