@@ -104,7 +104,7 @@ end
 
 M.encrypt = encrypt
 M.decrypt = decrypt
-M.b64enc = b64enc
-M.b64dec = b64dec
+M.b64encode = b64encode
+M.b64decode = b64decode
 
 return M
