@@ -43,8 +43,8 @@ end
 
 function M.setup()
   vim.cmd([[
-    command! -nargs=1 encrypt lua require('plugins.encrypt-plugin').encrypt(<f-args>)
-    command! -nargs=1 decrypt lua require('plugins.encrypt-plugin').decrypt(<f-args>)
+    command! -nargs=1 encrypt lua require('plugins.encrypt-text').encrypt(<f-args>)
+    command! -nargs=1 decrypt lua require('plugins.encrypt-text').decrypt(<f-args>)
   ]])
 end
 
