@@ -1,4 +1,5 @@
 local M = {}
+local dic = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
 local function encrypt(key)
   local text = table.concat(vim.api.nvim_buf_get_lines(0, 1, -1, false), "\n")
@@ -10,10 +11,9 @@ local function encrypt(key)
     local key_byte = string.byte(key, (i - 1) % #key + 1)
     table.insert(cipher, string.char(bit.bxor(byte, key_byte)))
   end
-  print(table.concat(cipher))
   local text_crypted = table.concat(cipher)
   local encrypted_text = "<!-- ENCRYPTED TEXT --\n" ..
-      vim.b64encode("Test") .. "\n-- /ENCRYPTED TEXT -->\n"
+      vim.api.b64encode("Test") .. "\n-- /ENCRYPTED TEXT -->\n"
   vim.api.nvim_buf_set_lines(0, 1, -1, false, vim.split(encrypted_text, "\n", true))
 end
 
