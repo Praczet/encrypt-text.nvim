@@ -10,7 +10,7 @@ local function encrypt(...)
   else
     key = vim.fn.inputsecret('Enter password: ')
     if key == '' then
-      print('Password can not be empty!!!')
+      print('Password can not be empty!!! - I am leaving you!!! ')
       return
     end
   end
@@ -26,7 +26,17 @@ local function encrypt(...)
   vim.api.nvim_buf_set_lines(0, 1, -1, false, vim.split(encrypted_text, "\n", true))
 end
 
-local function decrypt(key)
+local function decrypt(...)
+  local key = ''
+  if select("#", ...) > 0 then
+    key = select(1, ...)
+  else
+    key = vim.fn.inputsecret('Enter password: ')
+    if key == '' then
+      print('Password can not be empty!!! - I am leaving you!!! ')
+      return
+    end
+  end
   local encrypted_lines = vim.api.nvim_buf_get_lines(0, 1, -1, false)
   local start_comment = "<!-- ENCRYPTED TEXT --"
   local end_comment = "-- /ENCRYPTED TEXT -->"
