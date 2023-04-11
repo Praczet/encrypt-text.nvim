@@ -101,8 +101,8 @@ end
 
 function M.setup()
   vim.cmd([[
-    command! -nargs=1 Encrypt lua require('encrypt-text').encrypt(<f-args>)
-    command! -nargs=1 Decrypt lua require('encrypt-text').decrypt(<f-args>)
+    command! -nargs=? Encrypt lua require('encrypt-text').encrypt(<f-args>)
+    command! -nargs=? Decrypt lua require('encrypt-text').decrypt(<f-args>)
   ]])
 end
 
