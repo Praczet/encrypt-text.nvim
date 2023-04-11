@@ -1,9 +1,13 @@
 local M = {}
 local dic = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
-local function encrypt(key='')
+local function encrypt(...)
   local text = table.concat(vim.api.nvim_buf_get_lines(0, 1, -1, false), "\n")
   local cipher = {}
+  local key = ''
+  if select("#", ...) > 0 then
+    key = select(1, ...)
+  end
   -- print(text)
   print(cipher)
   for i = 1, #text do
