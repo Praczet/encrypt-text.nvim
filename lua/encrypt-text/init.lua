@@ -12,7 +12,7 @@ local function encrypt(key)
     table.insert(cipher, string.char(bit.bxor(byte, key_byte)))
   end
   local encrypted_text = "<!-- ENCRYPTED TEXT --\n" ..
-      M.b64encode(table.concat(cipher)) .. "\n-- /ENCRYPTED TEXT -->\n"
+      M.b64encode(table.concat(cipher)) .. "\n-- /ENCRYPTED TEXT -->"
   vim.api.nvim_buf_set_lines(0, 1, -1, false, vim.split(encrypted_text, "\n", true))
 end
 
