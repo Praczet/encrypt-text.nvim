@@ -7,6 +7,8 @@ local function encrypt(...)
   local key = ''
   if select("#", ...) > 0 then
     key = select(1, ...)
+  else
+    key = vim.fn.inputsecret('Enter password: ')
   end
   -- print(text)
   print(cipher)
