@@ -1,7 +1,7 @@
 local M = {}
 local dic = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
-local function encrypt(key)
+local function encrypt(key='')
   local text = table.concat(vim.api.nvim_buf_get_lines(0, 1, -1, false), "\n")
   local cipher = {}
   -- print(text)
