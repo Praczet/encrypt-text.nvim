@@ -9,6 +9,10 @@ local function encrypt(...)
     key = select(1, ...)
   else
     key = vim.fn.inputsecret('Enter password: ')
+    if key == '' then
+      print('Password can not be empty!!!')
+      return
+    end
   end
   -- print(text)
   print(cipher)
