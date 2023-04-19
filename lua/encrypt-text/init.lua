@@ -1,6 +1,8 @@
 local M = {}
 local dic = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
+-- Encrypts note. Not whole note but just note's text started from line:2 (I like to have in the first line a title)
+-- It can take one argument - password, if argument is not provided `inputsecret` will be used to ask for one
 local function encrypt(...)
   local text = table.concat(vim.api.nvim_buf_get_lines(0, 1, -1, false), "\n")
   local cipher = {}
@@ -26,6 +28,8 @@ local function encrypt(...)
   vim.api.nvim_buf_set_lines(0, 1, -1, false, vim.split(encrypted_text, "\n", true))
 end
 
+-- Decrypts note. Not whole note but just text between `<!-- ENCRYPTED TEXT --` and `-- /ENCRYPTED TEXT-->`
+-- It can take one argument - password, if argument is not provided `inputsecret` will be used to ask for one
 local function decrypt(...)
   local key = ''
   if select("#", ...) > 0 then
@@ -64,8 +68,9 @@ local function decrypt(...)
   vim.api.nvim_buf_set_lines(0, start_line, end_line + 1, false, vim.split(table.concat(plain), "\n", true))
 end
 
--- http://lua-users.org/wiki/BaseSixtyFour
--- encoding
+-- Encodes string (data)
+-- Credits goes to http://lua-users.org/wiki/BaseSixtyFour
+-- @param data string to encode
 local function b64encode(data)
   return (
       (data:gsub('.', function(x)
@@ -87,7 +92,9 @@ local function b64encode(data)
       )
 end
 
--- decoding
+-- Decodes given string
+-- Credits goes to http://lua-users.org/wiki/BaseSixtyFour
+-- @param data String to decode
 local function b64decode(data)
   data = string.gsub(data, '[^' .. dic .. '=]', '')
   return (
@@ -115,6 +122,9 @@ local function b64decode(data)
       )
 end
 
+-- Adds Command Encrypt and Decrypt
+-- - `:Encrypt [password]` - password is optional if not provided User will be asked for one
+-- - `:Decrypt [password]` - password is optional if not provided User will be asked for one
 function M.setup()
   vim.cmd([[
     command! -nargs=? Encrypt lua require('encrypt-text').encrypt(<f-args>)
@@ -127,4 +137,6 @@ M.decrypt = decrypt
 M.b64encode = b64encode
 M.b64decode = b64decode
 
+-- TODO: Make a decision if we need all 4 function to be public?
+-- and also if not use this metatable... for now let it be as it is
 return M
